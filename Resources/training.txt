@@ -1,0 +1,594 @@
+https://bit.ly/3qMcdfL
+https://cloud.google.com/sdk/docs/install
+https://github.com/GoogleCloudPlatform/training-data-analyst/blob/master/courses/data-engineering/demos/cloud_function_covid/main.py
+https://cloud.google.com/apis/docs/cloud-client-libraries
+
+hab_sh@yahoo.com
+
+gcloud builds submit --tag gcr.io/data-lake-systems-mattel-dev/Anaplan
+
+gcloud run deploy bqload \
+    --image gcr.io/modern-tangent-332504/bqload \
+    --region us-central1 \
+    --platform managed
+
+
+gcloud builds submit --tag gcr.io/data-discovery-mattel-dev/consumer
+
+docker images
+
+
+
+bq load --source_format=CSV --allow_jagged_rows --replace=true --field_delimiter="," --skip_leading_rows=1 --autodetect=true test.yob2000 gs://test3425/yob1885.txt
+
+
+Hand-on Assignments
+BigQuery: Qwik Start - Console 
+https://www.qwiklabs.com/focuses/577?parent=catalog
+Creating a Data Warehouse Through Joins and Unions
+https://www.qwiklabs.com/focuses/3640?parent=catalog
+Creating Date-Partitioned Tables in BigQuery
+https://www.qwiklabs.com/focuses/3694?parent=catalog
+Troubleshooting and Solving Data Join Pitfalls
+https://www.qwiklabs.com/focuses/3638?parent=catalog - trouble
+Working with JSON, Arrays, and Structs in BigQuery
+https://www.qwiklabs.com/focuses/3696?parent=catalog
+Build and Execute MySQL, PostgreSQL, and SQLServer to Data Catalog Connectors
+https://www.qwiklabs.com/focuses/11999?parent=catalog
+BigQuery: Qwik Start - Command Line
+https://www.qwiklabs.com/focuses/1145?parent=catalog
+
+
+
+
+================================================================================================
+=================================================================================================
+BIG Query
+=================================================================================================
+=================================================================================================
+bq cp -a 'project-id.dataset.customers$20210130' project-id.dataset.newtable
+bq mk --dataset dataset name
+bq mk -t ecommerce.sales_by_sku_20170802 product:string,total_orders:int64;
+bq query --dry_run --use_legacy_sql=false 'select * from training.fruit_details';
+sdsd
+use_legacy_sql=true
+sdsd
+use_legacy_sql=false
+bq query --use_legacy_sql=true 'select * from test.yob1899_partition$6001'
+bq load --source_format=CSV test.yob1882 yob1882.txt name:string,gender:string,count:integer
+
+SELECT * FROM `ecommerce.sales_by_sku_2017*`
+
+SELECT * FROM `ecommerce.sales_by_sku_2017*`
+WHERE _TABLE_SUFFIX = '0802'
+
+=========================================================================================================
+========================================================================================================
+END
+=========================================================================================================
+=========================================================================================================
+
+
+
+
+==========================================================================================================
+==========================================================================================================
+PARTITIONS
+========================================================================================================
+=========================================================================================================
+bq query use_legacy_sql=false --destination_table test.yob1902bq_part \
+	--range_partitioning count,0,10000,1000 \
+	'SELECT * FROM test.yob1901_part'
+	
+	
+bq query \
+  --use_legacy_sql=false \
+  --destination_table test.yob1902bq_part \
+  --range_partitioning count,0,100,10 \
+  'SELECT * FROM test.yob1901_part'
+  
+  
+ 
+bq update
+ --time_partitioning_expiration 43278798
+ myproject.dataset.table_name
+ 
+
+ 
+bq query \
+  --use_legacy_sql=false \
+  --destination_table mydataset.newtable \
+  --range_partitioning customer_id,0,100,10 \
+  'SELECT * FROM mydataset.ponies'
+  
+  
+bq query \
+  --use_legacy_sql=false \
+  --destination_table mydataset.newtable \
+  --time_partitioning_field transaction_date \
+  --time_partitioning_type MONTH \
+  'SELECT transaction_id, transaction_date FROM
+
+
+select * from `modern-tangent-332504.test.yob1901_part`
+where DATE(_PARTITIONTIME) > '2021-11-7'; 
+
+select * from test.INFORMATION_SCHEMA.PARTITIONS
+where table_name='yob1899_partition'
+order by partition_id;
+
+SELECT * FROM `hopeful-folder-291504.employee.yob1899` order by count DESC LIMIT 1000;
+SELECT table_name, partition_id, last_modified_time, total_rows
+FROM `hopeful-folder-291504.employee.INFORMATION_SCHEMA.PARTITIONS`
+WHERE table_name='yob1899_part_int1'
+ORDER BY partition_id DESC
+
+#standardSQL
+ CREATE OR REPLACE TABLE ecommerce.partition_by_day
+ PARTITION BY date_formatted
+ OPTIONS(
+   description="a table partitioned by date"
+ ) AS
+ SELECT DISTINCT
+ PARSE_DATE("%Y%m%d", date) AS date_formatted,
+ fullvisitorId
+ FROM `data-to-insights.ecommerce.all_sessions_raw`
+
+
+SELECT table_name, partition_id, total_rows
+FROM `mydataset.INFORMATION_SCHEMA.PARTITIONS`
+WHERE partition_id IS NOT NULL
+  
+ 
+https://cloud.google.com/bigquery/quotas#partitioned_tables
+ 
+===========================================================================================================
+============================================================================================================
+END
+=============================================================================================================
+==============================================================================================================
+ 
+
+
+
+
+====================================================================================
+====================================================================================
+CLUSTERING
+=======================================================================================
+======================================================================================
+
+SELECT
+  id,  title, accepted_answer_id,  creation_date,  answer_count,
+  comment_count,
+  favorite_count,
+  view_count
+FROM
+ `bigquery-public-data.stackoverflow.stackoverflow_posts`
+WHERE
+  creation_date BETWEEN '2010-01-01' AND '2014-02-01'
+  AND tags = 'android';
+
+
+CREATE OR REPLACE TABLE `hopeful-folder-291504.employee.stackoverflow_posts_clustered`
+PARTITION BY
+  DATE(creation_date)
+CLUSTER BY
+  tags AS
+SELECT
+  *
+FROM
+  `bigquery-public-data.stackoverflow.stackoverflow_posts`;
+
+No Part, No Clustering-1.9 GB `hopeful-folder-291504.employee.stackoverflow_posts`
+Part, Clustering - 926.5 MB `hopeful-folder-291504.employee.stackoverflow_posts_part_clustered`
+Part, No Clustering - ? MB  `hopeful-folder-291504.employee.stackoverflow_posts_part`
+No Part, Clustering - ? MB `hopeful-folder-291504.employee.stackoverflow_posts_clustered`
+
+==========================================================================================================
+============================================================================================================
+END
+===========================================================================================================
+===========================================================================================================
+
+
+
+
+
+===================================================================
+====================================================================
+SQL
+=======================================================================
+========================================================================
+gcloud sql connect root --user=root
+
+SELECT COLUMN_NAME.
+FROM INFORMATION_SCHEMA. COLUMNS.
+WHERE TABLE_NAME = 'Your Table Name'
+
+===========================================================================
+=============================================================================
+END
+===============================================================================
+==============================================================================
+
+
+
+
+
+
+==========================================================================================
+==========================================================================================
+STORED PROCEDURES
+==============================================================================================
+===============================================================================================
+bq query --use_legacy_sql=false \
+'
+CREATE OR REPLACE PROCEDURE employee.create_employee(eno INT64, empname STRING)
+BEGIN
+INSERT INTO employee.emp  VALUES(eno, empname);
+END;
+'
+
+
+
+create or replace procedure test.yob1882_sp(name STRING,gender STRING,count INT64)
+begin
+insert into test.yob1882 values(name,gender,count);
+END
+
+
+DECLARE name STRING DEFAULT NULL;
+DECLARE gender STRING DEFAULT NULL;
+DECLARE count INT64 DEFAULT NULL;
+set name='naveen'
+set gender = 'M'
+set count= 34245
+
+
+CREATE OR REPLACE PROCEDURE employee.create_employee(eno INT64, empname STRING)
+BEGIN
+INSERT INTO employee.emp  VALUES(eno, empname);
+END;
+
+===========================================================================================
+==========================================================================================
+END
+============================================================================================
+===========================================================================================
+
+
+
+
+
+
+========================================================================== 
+=========================================================================== 
+STORAGE CLASES
+============================================================================
+============================================================================= 
+
+gsutil mb gs://BUCKET_NAME
+gsutil mb gs://testhabib111
+gsutil ls
+Size=>
+gsutil du -s gs://BUCKET_NAME
+metadata=>
+gsutil ls -L -b gs://BUCKET_NAME
+Changing storage class
+gsutil defstorageclass set STORAGE_CLASS gs://BUCKET_NAME
+gsutil cp -r gs://SOURCE_BUCKET/* gs://DESTINATION_BUCKET
+rename ->
+gsutil cp -r gs://SOURCE_BUCKET/* gs://DESTINATION_BUCKET
+gsutil rm -r gs://SOURCE_BUCKET
+gsutil rm -a gs://SOURCE_BUCKET/**
+label changes->
+gsutil label ch -l KEY_1:VALUE_1 gs://BUCKET_NAME
+gsutil ls -L -b gs://BUCKET_NAME
+gsutil label ch -d KEY_1 gs://BUCKET_NAME
+remove=>
+gsutil rm -r gs://BUCKET_NAME
+upload/download=>
+gsutil cp OBJECT_LOCATION gs://DESTINATION_BUCKET_NAME/
+gsutil cp ./test.txt gs://habibtest1
+gsutil cp gs://BUCKET_NAME/OBJECT_NAME SAVE_TO_LOCATION
+listing=>
+gsutil ls -r gs://BUCKET_NAME/**
+gsutil cp gs://SOURCE_BUCKET_NAM
+
+=======================================================================
+======================================================================
+END
+=======================================================================
+========================================================================
+
+
+
+
+===========================================================================================
+===========================================================--------------------
+Sample cloud run and PUB sub 
+===============================================================
+=============================================================================================
+Step-1 - CloudRun
+-------------------------------------------------------------------
+git clone https://github.com/jonbcampos/cloudrun-series.git
+cd cloudrun-series
+cd getting-started
+gcloud builds submit --tag gcr.io/hopeful-folder-291504/getting-started .
+gcloud run deploy getting-started1 \
+    --image gcr.io/hopeful-folder-291504/getting-started \
+    --region us-central1 \
+    --platform managed
+
+Step-2 - Pub/Sub service account creation
+-------------------------------------------------------------------
+creation topic
+gcloud pubsub topics create getting-started
+
+
+Creation of Service account 
+gcloud iam service-accounts create service-gettingstarted --display-name "Cloud Run Streaming API"
+
+Assigning roles
+gcloud projects add-iam-policy-binding modern-tangent-332504 \
+    --member=serviceAccount:service-gettingstarted@modern-tangent-332504.iam.gserviceaccount.com \
+    --role=roles/iam.serviceAccountTokenCreator
+	
+	
+gcloud projects add-iam-policy-binding modern-tangent-332504 \
+    --member=serviceAccount:service-gettingstarted@modern-tangent-332504.iam.gserviceaccount.com \
+    --role=roles/run.invoker
+
+	
+creating subscription	
+gcloud beta pubsub subscriptions create gettingstarteds \
+        --topic getting-started \
+        --push-endpoint=https://getting-started-ah4fotvicq-uc.a.run.app/ \
+        --push-auth-service-account=service-gettingstarted@modern-tangent-332504.iam.gserviceaccount.com
+
+Step-3 - Cloud Scheduler
+----------------------------------------
+
+JOB SCHEDULER
+
+gcloud scheduler jobs create pubsub gettingstarted \
+    --schedule="* * * * *" \
+    --topic=getting-started \
+    --message-body="scheduler system" \
+	--location=us
+================================================================================================	
+===========================================================================================
+END
+===========================================================================================
+===================================================================================
+
+
+
+
+==========================================================================
+======================================================================
+CLOUD RUN PUB-SUB (cloud storage to Big query integration)
+====================================================================
+===============================================================================
+git clone https://github.com/habsh/stream-analytics-api.git
+
+image creation
+gcloud builds submit --tag gcr.io/modern-tangent-332504/stream-analytics .
+
+
+
+Creation of Service account 
+gcloud iam service-accounts create cloudrun-api --display-name "Cloud Run Streaming API"
+
+
+
+Assigning roles
+ gcloud projects add-iam-policy-binding modern-tangent-332504 \
+         --member serviceAccount:svc-cloudrun-api@modern-tangent-332504.iam.gserviceaccount.com \
+         --role roles/bigquery.admin
+gcloud projects add-iam-policy-binding modern-tangent-332504 \
+         --member serviceAccount:svc-cloudrun-api@modern-tangent-332504.iam.gserviceaccount.com \
+         --role roles/pubsub.editor
+gcloud projects add-iam-policy-binding modern-tangent-332504 \
+         --member serviceAccount:svc-cloudrun-api@modern-tangent-332504.iam.gserviceaccount.com \
+         --role roles/storage.admin
+gcloud projects add-iam-policy-binding modern-tangent-332504 \
+         --member serviceAccount:svc-cloudrun-api@modern-tangent-332504.iam.gserviceaccount.com \
+         --role roles/run.admin
+
+
+
+
+cloudrun service creation
+gcloud run deploy --image gcr.io/modern-tangent-332504/stream-analytics \
+         --service-account svc-cloudrun-api@modern-tangent-332504.iam.gserviceaccount.com \
+		 --region us-central1 \
+         --platform managed
+
+
+topic creation
+gcloud pubsub topics create pubsub-topic
+
+
+subscription creation
+gcloud pubsub subscriptions create pubsub-subscription \
+         --topic pubsub-topic \
+         --push-endpoint=https://stream-analytics-ah4fotvicq-uc.a.run.app/ \
+         --push-auth-service-account=svc-cloudrun-api@modern-tangent-332504.iam.gserviceaccount.com
+		 
+
+
+Notify syntax
+gsutil notification create -t TOPIC_NAME -f json gs://BUCKET_NAME
+	
+
+notify	
+gsutil notification create \
+         -f json \
+         -t projects/modern-tangent-332504/topics/pubsub-topic \
+         -e OBJECT_FINALIZE gs://habibtemp12
+
+
+
+Hands-on Assignment-1
+Cloud Storage: Qwik Start - CLI/SDK
+https://www.qwiklabs.com/focuses/1760?parent=catalog
+Hands-on Assignment-2
+Cloud Storage: Qwik Start - Cloud Console
+https://www.cloudskillsboost.google/focuses/569?parent=catalog&qlcampaign=6p-EDU-DSC-GCC-25
+
+=========================================================================================	
+=========================================================================
+END
++=======================================================================
+==================================================================================
+
+
+
+
+
+
+================================================================
+======================================================================
+DATAFLOW
+
+===========================================================================
+===========================================================================
+
+
+python  wordcount.py --input gs://dataflow-samples/shakespeare/kinglear.txt --output gs://habibtemp/counts --runner DataflowRunner --project hopeful-folder-291504 --region us-central1 --temp_location gs://habibtemp/tmp/
+python data_ingestion.py --project hopeful-folder-291504 --region us-central1 --runner DataflowRunner --staging_location gs://habibtemp/tmp --temp_location gs://habibtemp/tmp --input gs://habibtemp/usa_names.csv --save_main_session
+
+
+
+python data_ingestion.py --project modern-tangent-332504 --region us-central1 
+--runner DataflowRunner --staging_location gs://habibtemp/tmp --temp_location 
+gs://habibtemp/tmp --input gs://modern-tangent-332504/emp.csv --save_main_session
+
+===========================================================================================
+=======================================================================================
+END
+============================================================================================
+==========================================================================================
+
+
+
+
+
+=========================================================================================
+============================================================================================
+Cloud Function
+
+==============================================================================================
+=================================================================================
+
+
+
+
+
+
+================================================================================================
+=================================================================================================
+END
+================================================================================================
+====================================================================================================
+
+
+
+
+
+=========================================================================================
+========================================================================================
+Data Prep
+
+============================================================================
+=====================================================================================
+https://www.qwiklabs.com/focuses/584?parent=catalog
+
+
+
+
+
+
+
+
+
+==================================================
+=========================================================================================
+END
+=============================================================================================
+==============================================================================
+
+https://www.qwiklabs.com/focuses/6107?parent=catalog
+https://www.qwiklabs.com/focuses/6376?parent=catalog
+
+12374
+6376
+
+
+===============================================================================
+============================================================================
+IAM
+===============================================================
+=================================
+https://www.qwiklabs.com/focuses/1038?parent=catalog
+
+https://www.qwiklabs.com/focuses/1038?parent=catalog
+
+gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
+    --member serviceAccount:svc-cloudrun-api@modern-tangent-332504.iam.gserviceaccount.com --role roles/editor
+	
+	
+	
+	
+	
+	
+===============================================================================
+====================================================================================
+Creating Python Virtual Environment
+=======================================================================================
+===================================================================================
+sudo apt-get update
+sudo apt-get install -y virtualenv
+virtualenv -p python3 venv
+source venv/bin/activate
+sudo apt-get install -y git python3-pip
+
+
+
+
+https://github.com/habsh/stream-analytics-api.git
+https://www.qwiklabs.com/focuses/15943?parent=catalog
+https://www.qwiklabs.com/focuses/12364?parent=catalog
+
+
+---------------------------------------
+
+https://cognizantlearning.sumtotal.host/Core/pillarRedirect?relyingParty=LM&url=https:%2F%2FCOGNIZANTLEARNING.sumtotal.host%2Flearning%2Fapp%2Fmanagement%2FLMS_Evaluation.aspx%3FUserMode%3D0%26Mode%3D0 
+
+
+
+-----------------------
+
+from google.cloud import bigquery
+
+client = bigquery.Client()
+
+view_id = "data-lake-systems-mattel-dev.Ag_retail_etl.CM_ALL_ADDR_DATA_V"
+# Make an API request to get the table resource.
+view = client.get_table(view_id)
+
+# Display view properties
+print(f"Retrieved {view.table_type}: {str(view.reference)}")
+print(f"View Query:\n{view.view_query}")
+
+
+
+
+====================================================================
+curl -X POST 'https://api.clouddataprep.com/v4/jobGroups' \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer <token>' \
+-d '{ "wrangledDataset": { "id": "<recipe-id>" } }'
+======================================================================
