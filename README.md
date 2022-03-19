@@ -1,2 +1,2 @@
 # GCP
-Google Cloud Certifications
+All resources related to GCP data processing tools and Certifications
